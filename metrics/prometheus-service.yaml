@@ -5,7 +5,7 @@ metadata:
   namespace: prometheus
 spec:
   selector:
-    app: prometheus-prometheus-prometheus-oper-prometheus-0
+    app: prometheus-prometheus-oper-operator
   ports:
     - port: 9090
       targetPort: 9090
