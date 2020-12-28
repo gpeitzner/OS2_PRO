@@ -91,7 +91,6 @@ app.get("/games", async (req, res) => {
 app.put("/download/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id, "ID");
     mongo.connect(url, (err, db) => {
       if (err) {
         res.sendStatus(503);
@@ -105,7 +104,7 @@ app.put("/download/:id", async (req, res) => {
           { $inc: { downloads: 1 } },
           (err, result) => {
             if (err) {
-              res.sendStatus(503);
+              res.sendStatus(400);
               return;
             }
             res.json(result);
@@ -119,7 +118,27 @@ app.put("/download/:id", async (req, res) => {
 
 app.put("/user", async (req, res) => {
   try {
-    res.json({ message: "user" });
+    const { user, game } = req.body;
+    mongo.connect(url, (err, db) => {
+      if (err) {
+        res.sendStatus(503);
+        return;
+      }
+      const dbo = db.db("ezgames");
+      dbo
+        .collection("users")
+        .updateOne(
+          { _id: ObjectID(user) },
+          { $push: { games: game } },
+          (err, results) => {
+            if (err) {
+              res.sendStatus(400);
+              return;
+            }
+            res.json(results);
+          }
+        );
+    });
   } catch (error) {
     res.sendStatus(500);
   }
