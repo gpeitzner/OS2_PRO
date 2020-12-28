@@ -2,6 +2,31 @@
 
 Para desarrollar EZGAMES utilizamos 3 servicios, api, db y web los cuales se describen a continuacion. Cada uno de los cuales se controla mediante un dockerfile y un archivo para el despliegue llamado deployment.yaml
 
+
+## SETUP
+
+Para levantar los servicios mencionados es necesario ejecutar el archivo gke.sh que se encuentra en la raiz de este proyecto o bien ejecutar los siguientes comandos en el orden mencionado.
+
+        #database
+        gcloud compute disks create --size=10GB --zone=us-central1-f mongodb-disk
+        kubectl create namespace database
+        kubectl apply -f deployment.yaml
+        kubectl apply -f service.yaml
+        #api
+        docker build -t gcr.io/$DEVSHELL_PROJECT_ID/api:1.0 .
+        gcloud auth configure-docker
+        docker push gcr.io/$DEVSHELL_PROJECT_ID/api:1.0
+        kubectl create namespace api
+        kubectl apply -f deployment.yaml
+        kubectl apply -f service.yaml
+        #web
+        docker build -t gcr.io/$DEVSHELL_PROJECT_ID/web:1.0 .
+        gcloud auth configure-docker
+        docker push gcr.io/$DEVSHELL_PROJECT_ID/web:1.0
+        kubectl create namespace web
+        kubectl apply -f deployment.yaml
+        kubectl apply -f service.yaml
+        
 ## API
 
 Un api basada en la ultima version de NODE js, utiliza 3 replicas en kubernetes en el espacio api configurado utilizando el archivo deployment.yaml con las configuraciones adicionales del servicio utilizando el archivo service.yaml
