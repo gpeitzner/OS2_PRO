@@ -1,4 +1,5 @@
 #database
+gcloud compute disks create --size=10GB --zone=us-central1-f mongodb-disk
 kubectl create namespace database
 kubectl apply -f deployment.yaml
 kubectl apply -f service.yaml
