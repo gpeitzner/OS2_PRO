@@ -41,7 +41,23 @@ app.post("/signin", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   try {
-    res.json({ message: "login" });
+    const { email, password } = req.body;
+    mongo.connect(url, (err, db) => {
+      if (err) {
+        res.sendStatus(503);
+        return;
+      }
+      const dbo = db.db("ezgames");
+      dbo
+        .collection("users")
+        .findOne({ email: email, password: password }, (err, result) => {
+          if (err || !result) {
+            res.sendStatus(400);
+            return;
+          }
+          res.json(result);
+        });
+    });
   } catch (error) {
     res.sendStatus(500);
   }
