@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
 const mongo = require("mongodb").MongoClient;
+const { ObjectID } = require("mongodb");
 const url = "mongodb://35.232.154.17:27017/";
 const app = new express();
 
@@ -71,27 +72,46 @@ app.get("/games", async (req, res) => {
         return;
       }
       const dbo = db.db("ezgames");
-      console.log(
-        dbo
-          .collection("games")
-          .find()
-          .toArray((err, results) => {
-            if (err) {
-              res.sendStatus(400);
-              return;
-            }
-            res.json(results);
-          })
-      );
+      dbo
+        .collection("games")
+        .find()
+        .toArray((err, results) => {
+          if (err) {
+            res.sendStatus(400);
+            return;
+          }
+          res.json(results);
+        });
     });
   } catch (error) {
     res.sendStatus(500);
   }
 });
 
-app.put("/download", async (req, res) => {
+app.put("/download/:id", async (req, res) => {
   try {
-    res.json({ message: "download" });
+    const id = req.params.id;
+    console.log(id, "ID");
+    mongo.connect(url, (err, db) => {
+      if (err) {
+        res.sendStatus(503);
+        return;
+      }
+      const dbo = db.db("ezgames");
+      dbo
+        .collection("games")
+        .updateOne(
+          { _id: ObjectID(id) },
+          { $inc: { downloads: 1 } },
+          (err, result) => {
+            if (err) {
+              res.sendStatus(503);
+              return;
+            }
+            res.json(result);
+          }
+        );
+    });
   } catch (error) {
     res.sendStatus(500);
   }
