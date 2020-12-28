@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { DataService } from '../data.service';
 
 @Component({
@@ -9,9 +10,19 @@ import { DataService } from '../data.service';
 })
 export class HomeComponent implements OnInit {
   constructor(
-    private dataService: DataService,
-    private httpClient: HttpClient
-  ) {}
+    public dataService: DataService,
+    private httpClient: HttpClient,
+    private router: Router
+  ) {
+    if (!this.dataService.user) {
+      this.router.navigateByUrl('/');
+    }
+  }
 
   ngOnInit(): void {}
+
+  exit(): void {
+    this.dataService.user = null;
+    this.router.navigateByUrl('/');
+  }
 }

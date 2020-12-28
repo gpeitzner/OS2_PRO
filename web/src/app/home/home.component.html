@@ -4,8 +4,12 @@
       <img src="assets/clapperboard.png" /> EzGames</a
     >
     <div class="d-flex align-items-center">
-      <span class="align-middle"><h6 class="mr-3">name@host.com</h6></span>
-      <button type="button" class="btn btn-danger">Exit</button>
+      <span class="align-middle"
+        ><h6 class="mr-3">{{ this.dataService.user.email }}</h6></span
+      >
+      <button type="button" class="btn btn-danger" (click)="exit()">
+        Exit
+      </button>
     </div>
   </div>
 </nav>
