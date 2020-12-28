@@ -23,5 +23,6 @@ spec:
               mountPath: /data/db
       volumes:
         - name: mongodb-persistent-storage
-          persistentVolumeClaim:
-            claimName: mongodb-pv-claim
+          gcePersistentDisk:
+            pdName: mongodb-disk
+            fsType: ext4
