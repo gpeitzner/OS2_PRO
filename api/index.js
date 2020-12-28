@@ -65,7 +65,25 @@ app.post("/login", async (req, res) => {
 
 app.get("/games", async (req, res) => {
   try {
-    res.json({ message: "games" });
+    mongo.connect(url, (err, db) => {
+      if (err) {
+        res.sendStatus(503);
+        return;
+      }
+      const dbo = db.db("ezgames");
+      console.log(
+        dbo
+          .collection("games")
+          .find()
+          .toArray((err, results) => {
+            if (err) {
+              res.sendStatus(400);
+              return;
+            }
+            res.json(results);
+          })
+      );
+    });
   } catch (error) {
     res.sendStatus(500);
   }
