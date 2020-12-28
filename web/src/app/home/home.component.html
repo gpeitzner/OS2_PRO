@@ -1,6 +1,6 @@
 <nav class="navbar navbar-light bg-light">
   <div class="container-fluid">
-    <a href="#" class="navbar-brand">
+    <a href="/" class="navbar-brand">
       <img src="assets/clapperboard.png" /> EzGames</a
     >
     <div class="d-flex align-items-center">
@@ -23,6 +23,7 @@
         </div>
         <div class="card-footer text-center">
           <p class="card-text">
+            {{ game.downloads }}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -35,12 +36,12 @@
                 d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM8 5a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5A.5.5 0 0 1 8 5z"
               />
             </svg>
-            {{ game.downloads }}
           </p>
           <button
             type="button"
             class="btn btn-primary w-100"
             *ngIf="!dataService.user.games.includes(game._id)"
+            (click)="get(game)"
           >
             Get
           </button>
@@ -48,6 +49,7 @@
             type="button"
             class="btn btn-success w-100"
             *ngIf="dataService.user.games.includes(game._id)"
+            (click)="download(game)"
           >
             Download
           </button>
