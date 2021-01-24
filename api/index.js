@@ -4,7 +4,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const mongo = require("mongodb").MongoClient;
 const { ObjectID } = require("mongodb");
-const url = "mongodb://35.232.154.17:27017/";
+const url = process.env.MONGO_DB;
 const app = new express();
 
 app.use(bodyParser.json());
