@@ -1,3 +1,2 @@
 # OS2_PRO
-
-## Information
+Prometheus, Grafana, NodeJS, MongoDB and Angular deployment with GKE (K8s).
